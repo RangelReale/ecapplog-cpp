@@ -20,7 +20,6 @@ FetchContent_MakeAvailable(sockpp)
 FetchContent_MakeAvailable(json)
 
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-include_directories(${INCLUDE_DIR})
 include_directories(external)
 
 set(SRCS

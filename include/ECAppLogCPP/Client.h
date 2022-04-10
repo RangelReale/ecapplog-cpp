@@ -26,13 +26,15 @@ class Client
 {
 public:
 	Client(const std::string &appName = "ECAPPLOG-CPP", const std::string& address = "127.0.0.1", uint16_t port = 13991);
+	~Client();
 
 	void open();
 	void close();
 
-	void log(const std::chrono::system_clock::time_point& time, const std::string &priority, const std::string &message,
-		const std::string &source = "", const std::list<std::string> &extraCategories = std::list<std::string>());
-	void logNow(const std::string& priority, const std::string& message,
+	void log(const std::chrono::system_clock::time_point& time, const std::string &priority, const std::string& category, 
+		const std::string &message, const std::string &source = "", 
+		const std::list<std::string> &extraCategories = std::list<std::string>());
+	void logNow(const std::string& priority, const std::string& category, const std::string& message,
 		const std::string& source = "", const std::list<std::string>& extraCategories = std::list<std::string>());
 private:
 	class Impl;
