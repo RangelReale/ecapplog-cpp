@@ -1,7 +1,7 @@
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
 add_library(ecapplogcpp-objs OBJECT
-	${INCLUDE_DIR}/ECAppLogCPP/Client.h
+	${INCLUDE_DIR}/ecapplogcpp/Client.h
 	Client.cpp
 	Cmd.h
 	Cmd.cpp

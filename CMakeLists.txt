@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12.0)
 
-project(ECAppLogCPP LANGUAGES CXX VERSION "1.0.0")
+project(ecapplogcpp LANGUAGES CXX VERSION "1.0.0")
 
 SET (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -138,8 +138,8 @@ endif()
 
 # --- Install the library ---
 
-install(DIRECTORY include/ECAppLogCPP
-	DESTINATION include/ECAppLogCPP
+install(DIRECTORY include/ecapplogcpp
+	DESTINATION include/ecapplogcpp
 	FILES_MATCHING PATTERN "*.h*")
 
 # --- Default library for examples and unit tests ---
