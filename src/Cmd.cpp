@@ -1,4 +1,4 @@
-#include "ECAppLogCPP/Cmd.h"
+#include "Cmd.h"
 
 #include "date.h"
 

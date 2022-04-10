@@ -21,6 +21,13 @@ public:
     ~SafeQueue(void)
     {}
 
+    // Clear
+    void clear()
+    {
+        std::lock_guard<std::mutex> lock(m);
+        while (!q.empty()) q.pop();
+    }
+
     // Add an element to the queue.
     void enqueue(T t)
     {

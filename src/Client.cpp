@@ -1,5 +1,6 @@
 #include "ECAppLogCPP/Client.h"
-#include "ECAppLogCPP/SafeQueue.h"
+#include "SafeQueue.h"
+#include "Cmd.h"
 
 #include "sockpp/tcp_connector.h"
 
@@ -13,6 +14,7 @@ class CmdQuit : public Cmd
 {
 public:
 	std::string marshalJSON() { return ""; }
+	Command getCommand() { return Command::Command_Quit; }
 };
 
 
@@ -25,11 +27,11 @@ public:
 
 	}
 
-
 	void open()
 	{
 		if (!_isOpen)
 		{
+			_queue.clear();
 			_thread = std::thread(&Client::Impl::handleConnection, this);
 			_isOpen = true;
 		}
@@ -39,8 +41,16 @@ public:
 	{
 		if (_isOpen)
 		{
+			_queue.enqueue(std::make_shared<CmdQuit>());
+			_thread.join();
 			_isOpen = false;
 		}
+	}
+
+	void log(const std::chrono::system_clock::time_point& time, const std::string& priority, const std::string& message,
+		const std::string& source, const std::list<std::string>& extraCategories)
+	{
+		_queue.enqueue(std::make_shared<CmdLog>(time, priority, message, source, extraCategories));
 	}
 
 private:
@@ -63,29 +73,49 @@ private:
 
 	void handleConnectionLoop()
 	{
-		sockpp::tcp_connector conn({ _address, 8080 });
+		sockpp::tcp_connector conn({ _address, _port });
 		if (!conn) return;
 		conn.read_timeout(std::chrono::seconds(5));
 		handleBanner(conn);
+
+		while (true)
+		{
+			auto cmd = _queue.dequeue();
+			if (cmd)
+			{
+				auto quit = std::dynamic_pointer_cast<CmdQuit>(cmd);
+				if (quit) break;
+				handleCmd(conn, cmd);
+			}
+		}
 	}
 
 	void handleBanner(sockpp::tcp_connector& conn)
 	{
-		// write command
-		uint8_t cmd(static_cast<uint8_t>(Command::Command_Banner));
-		conn.write(&cmd, sizeof(cmd));
-
 		std::string data("ECAPPLOG ");
 		data.append(_appName);
+		writeCmd(conn, Command::Command_Banner, data);
+	}
+
+	void handleCmd(sockpp::tcp_connector& conn, std::shared_ptr<Cmd> cmd)
+	{
+		std::string data = cmd->marshalJSON();
+		writeCmd(conn, cmd->getCommand(), data);
+	}
+
+	void writeCmd(sockpp::tcp_connector& conn, Command command, const std::string &data)
+	{
+		// write command
+		uint8_t ccmd = static_cast<uint8_t>(command);
+		conn.write(&ccmd, sizeof(command));
 
 		// write size
-		int32_t size = htonl(static_cast<int32_t>(data.size()));
+		uint32_t size = htonl(static_cast<uint32_t>(data.size()));
 		conn.write(&size, sizeof(size));
 
 		// write data
 		conn.write(data);
 	}
-
 
 	std::string _appName, _address;
 	uint16_t _port;
@@ -95,42 +125,31 @@ private:
 };
 
 Client::Client(const std::string& appName, const std::string& address, uint16_t port) :
-	_appName(appName), _address(address), _port(port), _isOpen(false), _queue()
+	_impl(new Client::Impl(appName, address, port))
 {
 	
 }
 
 void Client::open()
 {
-	if (!_isOpen)
-	{
-		_thread = std::thread(&Client::handleConnection, this);
-		_isOpen = true;
-	}
+	_impl->open();
 }
 
 void Client::close()
 {
-	if (_isOpen)
-	{
-		_isOpen = false;
-	}
+	_impl->close();
 }
 
-void Client::handleConnection()
+void Client::log(const std::chrono::system_clock::time_point& time, const std::string& priority, const std::string& message,
+	const std::string& source, const std::list<std::string>& extraCategories)
 {
-	sockpp::socket_initializer sockInit;
+	_impl->log(time, priority, message, source, extraCategories);
+}
 
-	while (true)
-	{
-		sockpp::tcp_connector conn({ _address, 8080 });
-		if (!conn) {
-			cerr << "Error connecting to server at "
-				<< sockpp::inet_address(host, port)
-				<< "\n\t" << conn.last_error_str() << endl;
-			return 1;
-		}
-	}
+void Client::logNow(const std::string& priority, const std::string& message,
+	const std::string& source, const std::list<std::string>& extraCategories)
+{
+	log(std::chrono::system_clock::now(), priority, message, source, extraCategories);
 }
 
 }

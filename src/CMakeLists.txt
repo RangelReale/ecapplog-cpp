@@ -26,9 +26,9 @@ include_directories(external)
 set(SRCS
 	${INCLUDE_DIR}/ECAppLogCPP/Client.h
 	Client.cpp
-	${INCLUDE_DIR}/ECAppLogCPP/Cmd.h
+	Cmd.h
 	Cmd.cpp
-	${INCLUDE_DIR}/ECAppLogCPP/SafeQueue.h
+	SafeQueue.h
 )
 
 if(WIN32)
