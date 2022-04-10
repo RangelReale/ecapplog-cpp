@@ -22,7 +22,7 @@ class Client::Impl
 {
 public:
 	Client::Impl(const std::string& appName, const std::string& address, uint16_t port) :
-		_appName(appName), _address(address), _port(port), _isOpen(false), _queue()
+		_appName(appName), _address(address), _port(port), _isOpen(false), _isRunning(false), _queue()
 	{
 
 	}
@@ -41,6 +41,7 @@ public:
 	{
 		if (_isOpen)
 		{
+			_isRunning = false;
 			_queue.enqueue(std::make_shared<CmdQuit>());
 			_thread.join();
 			_isOpen = false;
@@ -56,9 +57,11 @@ public:
 private:
 	void handleConnection()
 	{
+		_isRunning = true;
+
 		sockpp::socket_initializer sockInit;
 		bool cont = true;
-		while (cont)
+		while (cont && _isRunning)
 		{
 			cont = true;
 			try
@@ -69,7 +72,7 @@ private:
 			{
 
 			}
-			if (cont)
+			if (cont && _isRunning)
 				std::this_thread::sleep_for(std::chrono::seconds(5));
 		}
 	}
@@ -125,7 +128,7 @@ private:
 
 	std::string _appName, _address;
 	uint16_t _port;
-	bool _isOpen;
+	bool _isOpen, _isRunning;
 	SafeQueue<std::shared_ptr<Cmd> > _queue;
 	std::thread _thread;
 };
