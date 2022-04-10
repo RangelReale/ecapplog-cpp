@@ -5,7 +5,7 @@
 #include <chrono>
 #include <list>
 
-namespace ECAppLogCPP
+namespace ecapplogcpp
 {
 
 enum class Command : uint8_t

@@ -4,7 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace ECAppLogCPP
+namespace ecapplogcpp
 {
 
 // A threadsafe-queue.

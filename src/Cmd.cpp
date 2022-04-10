@@ -3,7 +3,7 @@
 #include "date.h"
 #include <nlohmann/json.hpp>
 
-namespace ECAppLogCPP
+namespace ecapplogcpp
 {
 
 std::string CmdLog::marshalJSON()

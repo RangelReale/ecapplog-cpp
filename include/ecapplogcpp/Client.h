@@ -6,7 +6,7 @@
 #include <list>
 #include <memory>
 
-namespace ECAppLogCPP
+namespace ecapplogcpp
 {
 
 class Priority

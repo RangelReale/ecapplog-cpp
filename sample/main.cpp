@@ -1,4 +1,4 @@
-#include <ECAppLogCPP/Client.h>
+#include <ecapplogcpp/Client.h>
 
 #include <iostream>
 #include <sstream>
@@ -6,7 +6,7 @@
 
 int main()
 {
-	ECAppLogCPP::Client client;
+	ecapplogcpp::Client client;
 	client.open();
 
 	std::cout << "Sending logs" << std::endl;
@@ -15,15 +15,15 @@ int main()
 	{
 		std::stringstream log1;
 		log1 << "First log: " << i;
-		client.logNow(ECAppLogCPP::Priority::Priority_DEBUG, "app", log1.str());
+		client.logNow(ecapplogcpp::Priority::Priority_DEBUG, "app", log1.str());
 
 		std::stringstream log2;
 		log2 << "Second log: " << i;
-		client.logNow(ECAppLogCPP::Priority::Priority_INFORMATION, "app", log2.str());
+		client.logNow(ecapplogcpp::Priority::Priority_INFORMATION, "app", log2.str());
 
 		std::stringstream log3;
 		log3 << "Third log: " << i;
-		client.logNow(ECAppLogCPP::Priority::Priority_ERROR, "app", log3.str(), "log 3 source",
+		client.logNow(ecapplogcpp::Priority::Priority_ERROR, "app", log3.str(), "log 3 source",
 			std::list<std::string>{ "app_third" });
 	}
 

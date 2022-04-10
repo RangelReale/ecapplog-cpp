@@ -29,13 +29,11 @@ add_subdirectory(src)
 include(FetchContent)
 FetchContent_Declare(
 	sockpp
-	GIT_REPOSITORY https://github.com/fpagliughi/sockpp
-	GIT_TAG        v0.7.1
+	URL https://github.com/fpagliughi/sockpp/archive/refs/tags/v0.7.1.zip
 )
 FetchContent_Declare(
 	json
-	GIT_REPOSITORY https://github.com/nlohmann/json
-	GIT_TAG		   v3.10.5
+	URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
 )
 
 set(SOCKPP_BUILD_STATIC ON CACHE INTERNAL "Build static")

@@ -1,4 +1,4 @@
-#include "ECAppLogCPP/Client.h"
+#include "ecapplogcpp/Client.h"
 #include "SafeQueue.h"
 #include "Cmd.h"
 
@@ -7,7 +7,7 @@
 #include <thread>
 #include <chrono>
 
-namespace ECAppLogCPP
+namespace ecapplogcpp
 {
 
 class CmdQuit : public Cmd
