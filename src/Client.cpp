@@ -7,6 +7,7 @@
 #include <thread>
 #include <chrono>
 #include <sstream>
+#include <ctime>
 
 namespace ecapplogcpp
 {
@@ -198,6 +199,20 @@ void Client::logNow(const std::string& priority, const std::string& category, co
 	const std::string& source, const std::list<std::string>& extraCategories)
 {
 	log(std::chrono::system_clock::now(), priority, category, message, source, extraCategories);
+}
+
+std::chrono::system_clock::time_point Client::mktime(int year, int mon, int day, int hour, int min, int sec, int msec)
+{
+	std::tm tm{};  // zero initialise
+	tm.tm_year = year - 1900;
+	tm.tm_mon = mon - 1;
+	tm.tm_mday = day;
+	tm.tm_hour = hour;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	tm.tm_isdst = 0;
+	std::time_t t = std::mktime(&tm);
+	return std::chrono::system_clock::from_time_t(t) + std::chrono::milliseconds(msec);
 }
 
 }

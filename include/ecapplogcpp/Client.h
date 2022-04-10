@@ -36,6 +36,8 @@ public:
 		const std::list<std::string> &extraCategories = std::list<std::string>());
 	void logNow(const std::string& priority, const std::string& category, const std::string& message,
 		const std::string& source = "", const std::list<std::string>& extraCategories = std::list<std::string>());
+
+	static std::chrono::system_clock::time_point mktime(int year, int mon, int day, int hour, int min, int sec, int msec);
 private:
 	class Impl;
 	std::unique_ptr<Impl> _impl;
