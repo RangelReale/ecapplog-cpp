@@ -8,10 +8,8 @@ namespace ecapplogcpp
 
 std::string CmdLog::marshalJSON()
 {
-	std::string timef(date::format("%FT%T", date::floor<std::chrono::milliseconds>(time)));
-
 	nlohmann::json j;
-	j["time"] = timef;
+	j["time"] = timeStr;
 	j["priority"] = priority;
 	j["category"] = category;
 	j["message"] = message;

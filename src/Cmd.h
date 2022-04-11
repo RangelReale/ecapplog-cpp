@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ecapplogcpp/Data.h"
+
 #include <string>
 #include <cstdint>
 #include <chrono>
@@ -27,11 +29,11 @@ public:
 class CmdLog : public Cmd
 {
 public:
-	CmdLog(const std::chrono::system_clock::time_point& time, const std::string& priority, const std::string& category, 
+	CmdLog(const std::string& timeStr, const std::string& priority, const std::string& category,
 		const std::string& message, const std::string& source, const std::list<std::string>& extraCategories) :
-		time(time), priority(priority), category(category), message(message), source(source), extraCategories(extraCategories) {}
+		timeStr(timeStr), priority(priority), category(category), message(message), source(source), extraCategories(extraCategories) {}
 
-	std::chrono::system_clock::time_point time;
+	std::string timeStr;
 	std::string priority;
 	std::string category;
 	std::string message;

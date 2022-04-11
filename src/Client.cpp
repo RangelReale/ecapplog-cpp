@@ -59,10 +59,10 @@ public:
 		}
 	}
 
-	void log(const std::chrono::system_clock::time_point& time, const std::string& priority, const std::string& category, 
+	void log(const std::string& timeStr, const std::string& priority, const std::string& category,
 		const std::string& message, const std::string& source, const std::list<std::string>& extraCategories)
 	{
-		_queue.enqueue(std::make_shared<CmdLog>(time, priority, category, message, source, extraCategories));
+		_queue.enqueue(std::make_shared<CmdLog>(timeStr, priority, category, message, source, extraCategories));
 	}
 
 private:
@@ -195,22 +195,16 @@ void Client::close()
 	_impl->close();
 }
 
-void Client::log(const std::chrono::system_clock::time_point& time, const std::string& priority, const std::string& category, 
+void Client::log(const std::string& timeStr, const std::string& priority, const std::string& category,
 	const std::string& message, const std::string& source, const std::list<std::string>& extraCategories)
 {
-	_impl->log(time, priority, category, message, source, extraCategories);
+	_impl->log(timeStr, priority, category, message, source, extraCategories);
 }
 
 void Client::logNow(const std::string& priority, const std::string& category, const std::string& message,
 	const std::string& source, const std::list<std::string>& extraCategories)
 {
-	log(std::chrono::system_clock::now(), priority, category, message, source, extraCategories);
-}
-
-std::chrono::system_clock::time_point Client::mktime(int year, int mon, int day, int hour, int min, int sec, int msec)
-{
-	return date::sys_days(date::year_month_day(date::year(year), date::month(mon), date::day(day))) + 
-		std::chrono::hours{ hour } + std::chrono::minutes{ min } + std::chrono::seconds{ sec } + std::chrono::milliseconds(msec);
+	logTime(std::chrono::system_clock::now(), priority, category, message, source, extraCategories);
 }
 
 }

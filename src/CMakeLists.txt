@@ -3,6 +3,8 @@ set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 add_library(ecapplogcpp-objs OBJECT
 	${INCLUDE_DIR}/ecapplogcpp/Client.h
 	Client.cpp
+	${INCLUDE_DIR}/ecapplogcpp/Data.h
+	Data.cpp
 	Cmd.h
 	Cmd.cpp
 	SafeQueue.h

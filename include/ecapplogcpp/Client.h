@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ecapplogcpp/Data.h>
+
 #include <string>
 #include <cstdint>
 #include <chrono>
@@ -8,19 +10,6 @@
 
 namespace ecapplogcpp
 {
-
-class Priority
-{
-public: 
-	inline static const std::string Priority_TRACE = "TRACE";
-	inline static const std::string Priority_DEBUG = "DEBUG";
-	inline static const std::string Priority_INFORMATION = "INFORMATION";
-	inline static const std::string Priority_NOTICE = "NOTICE";
-	inline static const std::string Priority_WARNING = "WARNING";
-	inline static const std::string Priority_FATAL = "FATAL";
-	inline static const std::string Priority_CRITICAL = "CRITICAL";
-	inline static const std::string Priority_ERROR = "ERROR";
-};
 
 class Client
 {
@@ -31,13 +20,19 @@ public:
 	void open();
 	void close();
 
-	void log(const std::chrono::system_clock::time_point& time, const std::string &priority, const std::string& category, 
+	// time format (UTC): YYYY-MM-DDTHH:NN:SS.LLL
+	void log(const std::string &timeStr, const std::string &priority, const std::string& category, 
 		const std::string &message, const std::string &source = "", 
 		const std::list<std::string> &extraCategories = std::list<std::string>());
 	void logNow(const std::string& priority, const std::string& category, const std::string& message,
 		const std::string& source = "", const std::list<std::string>& extraCategories = std::list<std::string>());
-
-	static std::chrono::system_clock::time_point mktime(int year, int mon, int day, int hour, int min, int sec, int msec);
+	template<class T>
+	void logTime(T time, const std::string& priority, const std::string& category,
+		const std::string& message, const std::string& source = "",
+		const std::list<std::string>& extraCategories = std::list<std::string>())
+	{
+		log(TimeProvider<T>(time).getTime(), priority, category, message, source, extraCategories);
+	}
 private:
 	class Impl;
 	std::unique_ptr<Impl> _impl;

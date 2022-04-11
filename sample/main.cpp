@@ -19,7 +19,7 @@ int main()
 
 		std::stringstream log2;
 		log2 << "Second log: " << i;
-		client.logNow(ecapplogcpp::Priority::Priority_INFORMATION, "app", log2.str());
+		client.logTime(std::chrono::system_clock::now() - std::chrono::hours(1), ecapplogcpp::Priority::Priority_INFORMATION, "app", log2.str());
 
 		std::stringstream log3;
 		log3 << "Third log: " << i;
