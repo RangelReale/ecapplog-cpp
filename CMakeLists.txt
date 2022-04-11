@@ -19,8 +19,13 @@ set(ECAPPLOGCPP_STATIC ${ECAPPLOGCPP}-static)
 option(ECAPPLOGCPP_BUILD_STATIC "Build static library" ON)
 option(ECAPPLOGCPP_BUILD_SHARED "Build shared library" OFF)
 option(ECAPPLOGCPP_BUILD_SAMPLES "Build samples" OFF)
+option(ECAPPLOGCPP_BUILD_TESTS "Build tests" OFF)
 
 # --- Common Library Sources, etc ---
+
+if(ECAPPLOGCPP_BUILD_TESTS)
+    include(CTest)
+endif()
 
 add_subdirectory(src)
 
@@ -35,11 +40,19 @@ FetchContent_Declare(
 	json
 	URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
 )
+FetchContent_Declare(
+	Catch2
+	URL https://github.com/catchorg/Catch2/archive/refs/tags/v2.13.8.zip
+)
 
 set(SOCKPP_BUILD_STATIC ON CACHE INTERNAL "Build static")
 set(SOCKPP_BUILD_SHARED OFF CACHE INTERNAL "Don't build shared")
+set(CATCH_BUILD_STATIC_LIBRARY ON CACHE INTERNAL "Build catch2 static")
 FetchContent_MakeAvailable(sockpp)
 FetchContent_MakeAvailable(json)
+if (ECAPPLOGCPP_BUILD_TESTS AND CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+	FetchContent_MakeAvailable(Catch2)
+endif()
 
 # --- Header Locations ---
 target_include_directories(ecapplogcpp-objs 
@@ -152,4 +165,10 @@ endif()
 
 if (ECAPPLOGCPP_BUILD_SAMPLES)
   add_subdirectory(sample)
+endif()
+
+# --- Unit Tests ---
+
+if (ECAPPLOGCPP_BUILD_TESTS AND CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+  add_subdirectory(tests)
 endif()
