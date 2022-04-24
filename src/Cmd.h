@@ -30,14 +30,18 @@ class CmdLog : public Cmd
 {
 public:
 	CmdLog(const std::string& timeStr, const std::string& priority, const std::string& category,
-		const std::string& message, const std::string& source, const std::list<std::string>& extraCategories) :
-		timeStr(timeStr), priority(priority), category(category), message(message), source(source), extraCategories(extraCategories) {}
+		const std::string& message, const std::string& source, const std::string& color, const std::string& bgcolor, 
+		const std::list<std::string>& extraCategories) :
+		timeStr(timeStr), priority(priority), category(category), message(message), source(source),
+		color(color), bgcolor(bgcolor), extraCategories(extraCategories) {}
 
 	std::string timeStr;
 	std::string priority;
 	std::string category;
 	std::string message;
 	std::string source;
+	std::string color;
+	std::string bgcolor;
 	std::list<std::string> extraCategories;
 
 	std::string marshalJSON();

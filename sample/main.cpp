@@ -23,7 +23,7 @@ int main()
 
 		std::stringstream log3;
 		log3 << "Third log: " << i;
-		client.logNow(ecapplogcpp::Priority::Priority_ERROR, "app", log3.str(), "log 3 source",
+		client.logNow(ecapplogcpp::Priority::Priority_ERROR, "app", log3.str(), "log 3 source", "", "",
 			std::list<std::string>{ "app_third" });
 	}
 

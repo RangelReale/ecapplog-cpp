@@ -16,10 +16,15 @@ std::string CmdLog::marshalJSON()
 	if (!source.empty()) {
 		j["source"] = source;
 	}
+	if (!color.empty()) {
+		j["color"] = color;
+	}
+	if (!bgcolor.empty()) {
+		j["bgcolor"] = bgcolor;
+	}
 	if (!extraCategories.empty()) {
 		j["extra_categories"] = extraCategories;
 	}
-
 	return j.dump();
 }
 

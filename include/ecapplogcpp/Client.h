@@ -22,16 +22,18 @@ public:
 
 	// time format (UTC): YYYY-MM-DDTHH:NN:SS.LLL
 	void log(const std::string &timeStr, const std::string &priority, const std::string& category, 
-		const std::string &message, const std::string &source = "", 
-		const std::list<std::string> &extraCategories = std::list<std::string>());
+		const std::string &message, const std::string &source = "", const std::string& color = "", const std::string& bgcolor = "", 
+		const std::list<std::string>& extraCategories = std::list<std::string>());
 	void logNow(const std::string& priority, const std::string& category, const std::string& message,
-		const std::string& source = "", const std::list<std::string>& extraCategories = std::list<std::string>());
+		const std::string& source = "", const std::string& color = "", const std::string& bgcolor = "", 
+		const std::list<std::string>& extraCategories = std::list<std::string>());
 	template<class T>
 	void logTime(T time, const std::string& priority, const std::string& category,
 		const std::string& message, const std::string& source = "",
+		const std::string& color = "", const std::string& bgcolor = "", 
 		const std::list<std::string>& extraCategories = std::list<std::string>())
 	{
-		log(TimeProvider<T>(time).getTime(), priority, category, message, source, extraCategories);
+		log(TimeProvider<T>(time).getTime(), priority, category, message, source, color, bgcolor, extraCategories);
 	}
 private:
 	class Impl;

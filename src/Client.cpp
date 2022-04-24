@@ -60,9 +60,10 @@ public:
 	}
 
 	void log(const std::string& timeStr, const std::string& priority, const std::string& category,
-		const std::string& message, const std::string& source, const std::list<std::string>& extraCategories)
+		const std::string& message, const std::string& source, const std::string& color, const std::string& bgcolor, 
+		const std::list<std::string>& extraCategories)
 	{
-		_queue.enqueue(std::make_shared<CmdLog>(timeStr, priority, category, message, source, extraCategories));
+		_queue.enqueue(std::make_shared<CmdLog>(timeStr, priority, category, message, source, color, bgcolor, extraCategories));
 	}
 
 private:
@@ -196,15 +197,16 @@ void Client::close()
 }
 
 void Client::log(const std::string& timeStr, const std::string& priority, const std::string& category,
-	const std::string& message, const std::string& source, const std::list<std::string>& extraCategories)
+	const std::string& message, const std::string& source, const std::string& color, const std::string& bgcolor, 
+	const std::list<std::string>& extraCategories)
 {
-	_impl->log(timeStr, priority, category, message, source, extraCategories);
+	_impl->log(timeStr, priority, category, message, source, color, bgcolor, extraCategories);
 }
 
 void Client::logNow(const std::string& priority, const std::string& category, const std::string& message,
-	const std::string& source, const std::list<std::string>& extraCategories)
+	const std::string& source, const std::string& color, const std::string& bgcolor, const std::list<std::string>& extraCategories)
 {
-	logTime(std::chrono::system_clock::now(), priority, category, message, source, extraCategories);
+	logTime(std::chrono::system_clock::now(), priority, category, message, source, color, bgcolor, extraCategories);
 }
 
 }
